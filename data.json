@@ -1,0 +1,43 @@
+{
+  "karyawan": [
+    { "name": "Smartwatch", "image": "" },
+    { "name": "Voucher Belanja 500K", "image": "" },
+    { "name": "Powerbank", "image": "" },
+    { "name": "Headset Bluetooth", "image": "" },
+    { "name": "Setrika", "image": "" },
+    { "name": "Rice Cooker", "image": "" },
+    { "name": "Lunch Box Set", "image": "" },
+    { "name": "Payung Premium", "image": "" },
+    { "name": "Tas Laptop", "image": "" }
+  ],
+  "non_karyawan": [
+    { "name": "Voucher Grab 100K", "image": "" },
+    { "name": "Paket Sembako", "image": "" },
+    { "name": "Kaos Eksklusif", "image": "" },
+    { "name": "Mug Unik", "image": "" },
+    { "name": "Snack Box", "image": "" },
+    { "name": "Kipas Angin", "image": "" },
+    { "name": "Lampu Meja", "image": "" },
+    { "name": "Pulsa 50K", "image": "" },
+    { "name": "Voucher Alfamart", "image": "" },
+    { "name": "Payung Lipat", "image": "" },
+    { "name": "Totebag Cantik", "image": "" },
+    { "name": "Buku Catatan", "image": "" },
+    { "name": "Pulpen Premium", "image": "" },
+    { "name": "Tumbler", "image": "" },
+    { "name": "Topi", "image": "" },
+    { "name": "Gantungan Kunci", "image": "" },
+    { "name": "Sajadah Travel", "image": "" },
+    { "name": "Handuk", "image": "" },
+    { "name": "Power Cable", "image": "" },
+    { "name": "Hand Sanitizer", "image": "" },
+    { "name": "Masker Kain", "image": "" },
+    { "name": "Sabun Mewah", "image": "" },
+    { "name": "Jam Dinding", "image": "" },
+    { "name": "Kabel Charger", "image": "" },
+    { "name": "Mini Speaker", "image": "" },
+    { "name": "Gelas Cantik", "image": "" },
+    { "name": "Pouch", "image": "" },
+    { "name": "Pulsa 25K", "image": "" }
+  ]
+}

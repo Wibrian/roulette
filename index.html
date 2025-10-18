@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="id">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>🎁 Roulette Doorprize — 39 Hadiah</title>
+    <link rel="stylesheet" href="style.css" />
+  </head>
+  <body>
+    <div class="wrap">
+      <!-- PANEL KIRI -->
+      <div class="panel left">
+        <h1>🎡 Roulette Doorprize — 39 Hadiah</h1>
+        <p class="lead">
+          Terdiri dari <strong>11 hadiah karyawan</strong> dan <strong>28 non-karyawan</strong>. Semua hadiah tergabung
+          dalam satu roda, dengan tipe hadiah yang tetap <em>rahasia</em>.
+        </p>
+
+        <div class="controls">
+          <button id="spinBtn">SPIN</button>
+          <div class="small" id="spinCount">Spins: 0</div>
+          <button id="resetBtn" class="gray">RESET</button>
+        </div>
+
+        <div class="participants-title">Daftar Peserta:</div>
+        <div class="participants" id="participantsList"></div>
+      </div>
+
+      <!-- PANEL KANAN -->
+      <div class="panel right">
+        <div class="canvas-wrapper">
+          <canvas id="wheelCanvas" width="700" height="700"></canvas>
+          <div class="pointer"></div>
+        </div>
+
+        <div class="result" id="resultBox">Hasil: -</div>
+      </div>
+    </div>
+
+    <footer>
+      © 2025 — Static Doorprize Roulette |
+      <span>Versi Rahasia (Karyawan & Non-Karyawan)</span>
+    </footer>
+
+    <script src="script.js"></script>
+  </body>
+</html>
