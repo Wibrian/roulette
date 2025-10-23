@@ -1,15 +1,17 @@
 /* ============================================================
    🎯 SPIN ROULETTE DOORPRIZE — POINTER JAM 3 (KANAN)
-   - Pemenang berhenti tepat di sisi kanan roda.
-   - Teks hadiah horizontal (tidak terbalik).
-   - Kode bersih dan mudah dipahami.
+   - Menggunakan data.json dengan struktur employees / nonEmployees
+   - Hadiah dibedakan otomatis sesuai kategori peserta
+   - Pemenang berhenti tepat di sisi kanan roda
    ============================================================ */
 
 // --- Variabel utama ---
-let prizes = { karyawan: [], non_karyawan: [] }
+let data = { employees: {}, nonEmployees: {} }
 let participants = []
+let allPrizes = []
 let spinning = false
 let spinCount = 0
+let winners = []
 
 // --- Elemen DOM ---
 const wheelCanvas = document.getElementById("wheelCanvas")
@@ -20,7 +22,7 @@ const resultBox = document.getElementById("resultBox")
 const participantsList = document.getElementById("participantsList")
 const spinCountEl = document.getElementById("spinCount")
 
-// --- Konfigurasi roda ---
+// --- Ukuran roda ---
 const size = wheelCanvas.width
 const cx = size / 2
 const cy = size / 2
@@ -32,85 +34,57 @@ function randInt(max) {
 }
 
 // ============================================================
-// 1️⃣ MUAT DATA HADIAH DARI data.json
+// 1️⃣ MUAT DATA DARI data.json
 // ============================================================
 fetch("data.json")
   .then((res) => res.json())
-  .then((data) => {
-    prizes = data
+  .then((json) => {
+    data = json
     generateParticipants()
+    generatePrizes()
     renderParticipants()
     drawWheel(0)
   })
 
 // ============================================================
-// 2️⃣ BUAT PESERTA (11 karyawan + 28 non-karyawan)
+// 2️⃣ GENERATE PESERTA DARI DATA
 // ============================================================
 function generateParticipants() {
-  const karyawan = ["Andi", "Budi", "Citra", "Dewi", "Eko", "Fajar", "Gita", "Hadi", "Indra"]
-
-  const nonKaryawan = [
-    "Lina",
-    "Maya",
-    "Nina",
-    "Oscar",
-    "Putra",
-    "Qori",
-    "Rian",
-    "Santi",
-    "Tono",
-    "Umar",
-    "Vina",
-    "Wawan",
-    "Xena",
-    "Yogi",
-    "Zahra",
-    "Bagus",
-    "Cahya",
-    "Dimas",
-    "Elin",
-    "Fani",
-    "Galuh",
-    "Hana",
-    "Irwan",
-    "Jihan",
-    "Karin",
-    "Lutfi",
-    "Mega",
-  ]
-
-  participants = [
-    ...karyawan.map((n) => ({ name: n, type: "karyawan" })),
-    ...nonKaryawan.map((n) => ({ name: n, type: "non_karyawan" })),
-  ]
+  const emp = data.employees.names.map((n) => ({ name: n, type: "employee" }))
+  const non = data.nonEmployees.names.map((n) => ({ name: n, type: "nonEmployee" }))
+  participants = [...emp, ...non]
 }
 
 // ============================================================
-// 3️⃣ TAMPILKAN DAFTAR PESERTA DI PANEL KIRI
+// 3️⃣ GENERATE HADIAH DARI DATA
+// ============================================================
+function generatePrizes() {
+  const empPrizes = data.employees.prizes.map((p) => ({ name: p.name, image: p.image, type: "employee" }))
+  const nonPrizes = data.nonEmployees.prizes.map((p) => ({ name: p.name, image: p.image, type: "nonEmployee" }))
+  allPrizes = [...empPrizes, ...nonPrizes]
+}
+
+// ============================================================
+// 4️⃣ TAMPILKAN PESERTA DI PANEL KIRI
 // ============================================================
 function renderParticipants() {
   participantsList.innerHTML = ""
   participants.forEach((p, i) => {
     const div = document.createElement("div")
-    div.className = "participant " + (p.type === "karyawan" ? "emp" : "non")
+    div.className = "participant " + (p.type === "employee" ? "emp" : "non")
     div.innerHTML = `<div>${i + 1}. ${p.name}</div><div>#${i + 1}</div>`
     participantsList.appendChild(div)
   })
 }
 
 // ============================================================
-// 4️⃣ GAMBAR RODA DENGAN LABEL HADIAH
+// 5️⃣ GAMBAR RODA DENGAN LABEL HADIAH
 // ============================================================
 function drawWheel(rotation = 0) {
   ctx.clearRect(0, 0, size, size)
   ctx.save()
   ctx.translate(cx, cy)
   ctx.rotate(rotation)
-
-  const allPrizes = [
-    ...prizes.karyawan.map((p) => ({ ...p, type: "karyawan" })),
-    ...prizes.non_karyawan.map((p) => ({ ...p, type: "non_karyawan" })),
-  ]
 
   const segmentCount = allPrizes.length
   const segmentAngle = (Math.PI * 2) / segmentCount
@@ -124,16 +98,16 @@ function drawWheel(rotation = 0) {
     ctx.moveTo(0, 0)
     ctx.arc(0, 0, radius, start, end)
     ctx.closePath()
-    ctx.fillStyle = i % 2 === 0 ? "#fff" : "#f8f8f8"
+    ctx.fillStyle = i % 2 === 0 ? "#ffffff" : "#f8f8f8"
     ctx.fill()
-    ctx.strokeStyle = "#ddd"
+    ctx.strokeStyle = "#aaaaaaff"
     ctx.stroke()
 
-    // --- Tulis nama hadiah horizontal (menghadap kanan) ---
+    // Teks horizontal (menghadap kanan)
     ctx.save()
     const mid = (start + end) / 2
     ctx.rotate(mid)
-    ctx.translate(radius * 0.75, 0)
+    ctx.translate(radius * 0.71, 5)
     ctx.rotate(0)
     ctx.font = "bold 14px Arial"
     ctx.fillStyle = "#333"
@@ -150,19 +124,11 @@ function drawWheel(rotation = 0) {
   ctx.strokeStyle = "#eee"
   ctx.stroke()
 
-  // Garis panduan ke arah pointer kanan (jam 3)
-  ctx.beginPath()
-  ctx.moveTo(0, 0)
-  ctx.lineTo(radius, 0)
-  ctx.strokeStyle = "rgba(255,0,0,0.3)"
-  ctx.lineWidth = 2
-  ctx.stroke()
-
   ctx.restore()
 }
 
 // ============================================================
-// 5️⃣ LOGIKA SPIN & ANIMASI
+// 6️⃣ LOGIKA SPIN & PENENTUAN PEMENANG
 // ============================================================
 spinBtn.addEventListener("click", () => {
   if (spinning) return
@@ -170,41 +136,35 @@ spinBtn.addEventListener("click", () => {
   spinBtn.disabled = true
   resetBtn.disabled = true
 
-  const allPrizes = [
-    ...prizes.karyawan.map((p) => ({ ...p, type: "karyawan" })),
-    ...prizes.non_karyawan.map((p) => ({ ...p, type: "non_karyawan" })),
-  ]
-
   const segmentCount = allPrizes.length
   const segmentAngle = (Math.PI * 2) / segmentCount
 
   // Pilih pemenang acak
   const winnerIndex = randInt(segmentCount)
-  const winnerParticipant = participants[randInt(participants.length)]
+  const prize = allPrizes[winnerIndex]
 
-  // Hitung rotasi agar segmen pemenang berhenti di kanan (jam 3)
+  // Pilih peserta sesuai kategori hadiah
+  const pool = participants.filter((p) => p.type === prize.type)
+  const winnerParticipant = pool[randInt(pool.length)]
+
+  // Hitung rotasi agar hadiah pemenang berhenti di kanan (jam 3)
   const segmentMidAngle = winnerIndex * segmentAngle + segmentAngle / 2
   const targetRotation = 0 - segmentMidAngle
-
-  // Tambahkan beberapa putaran agar tampak realistis
-  const extraRounds = 10 + randInt(4) // 6–9 putaran
+  const extraRounds = 8 + randInt(4)
   const finalRotation = targetRotation + extraRounds * Math.PI * 2
 
-  // Durasi animasi (ms)
-  const duration = 10000
+  const duration = 9000
   const startTime = performance.now()
 
-  // Fungsi easing (pelan di akhir)
   function easeOutCubic(t) {
-    return 1 - Math.pow(1 - t, 4)
+    return 1 - Math.pow(1 - t, 3)
   }
 
-  // Animasi rotasi
   function animate(time) {
     const elapsed = time - startTime
     const progress = Math.min(elapsed / duration, 1)
     const eased = easeOutCubic(progress)
-    const currentRotation = (finalRotation - 0) * eased
+    const currentRotation = finalRotation * eased
 
     drawWheel(currentRotation)
 
@@ -217,40 +177,21 @@ spinBtn.addEventListener("click", () => {
       spinCount++
       spinCountEl.textContent = "Spins: " + spinCount
 
-      // Hitung segmen yang berhenti di pointer kanan (jam 3)
-      let angleAtPointer = (-finalRotation + 0) % (Math.PI * 2)
-      if (angleAtPointer < 0) angleAtPointer += Math.PI * 2
-      let finalIndex = Math.floor((angleAtPointer / segmentAngle + 0.5) % segmentCount)
+      // Hapus data yang sudah menang
+      participants = participants.filter((p) => p.name !== winnerParticipant.name)
+      allPrizes = allPrizes.filter((p) => p.name !== prize.name)
 
-      const prize = allPrizes[finalIndex]
+      // Simpan pemenang
+      winners.push({ name: winnerParticipant.name, prize: prize.name })
 
-      // Tampilkan hasil
       resultBox.innerHTML = `
         🎉 <strong>${winnerParticipant.name}</strong><br>
         Mendapatkan: <strong>${prize.name}</strong>
       `
-
-      // Tampilkan gambar hadiah jika ada
-      let imgEl = document.getElementById("prizeImageSmall")
-      if (!imgEl) {
-        imgEl = document.createElement("img")
-        imgEl.id = "prizeImageSmall"
-        imgEl.style.marginTop = "10px"
-        imgEl.style.width = "120px"
-        imgEl.style.height = "120px"
-        imgEl.style.objectFit = "contain"
-        imgEl.style.borderRadius = "8px"
-        resultBox.appendChild(imgEl)
-      }
-
-      if (prize.image && prize.image.trim() !== "") {
-        imgEl.src = prize.image
-        imgEl.style.display = "block"
-      } else {
-        imgEl.style.display = "none"
-      }
-
       highlightParticipant(winnerParticipant.name)
+
+      // tampilkan panel hadiah (kanan)
+      showPrizePanel(winnerParticipant.name, prize)
     }
   }
 
@@ -258,7 +199,7 @@ spinBtn.addEventListener("click", () => {
 })
 
 // ============================================================
-// 6️⃣ HIGHLIGHT PEMENANG DI PANEL KIRI
+// 7️⃣ HIGHLIGHT PEMENANG DI PANEL KIRI
 // ============================================================
 function highlightParticipant(name) {
   const nodes = participantsList.querySelectorAll(".participant")
@@ -266,20 +207,36 @@ function highlightParticipant(name) {
     n.style.boxShadow = ""
     n.style.border = ""
     if (n.textContent.includes(name)) {
-      n.style.boxShadow = "0 4px 12px rgba(0,0,0,0.08)"
-      n.style.border = "1px solid var(--accent)"
+      n.style.border = "2px solid var(--accent)"
+      n.style.background = "#c5ffc0ff"
       n.scrollIntoView({ behavior: "smooth", block: "center" })
     }
   })
 }
 
+// === PANEL HADIAH (KANAN) ===
+function showPrizePanel(winner, prize) {
+  const prizeDisplay = document.getElementById("prizeDisplay")
+  const prizeImage = document.getElementById("prizeImage")
+  const prizeName = document.getElementById("prizeName")
+  const winnerName = document.getElementById("winnerName")
+
+  prizeName.textContent = prize.name
+  winnerName.textContent = `🎉 ${winner}`
+  prizeImage.src = prize.image || ""
+  prizeDisplay.classList.remove("hidden")
+}
+
 // ============================================================
-// 7️⃣ RESET
+// 8️⃣ RESET
 // ============================================================
 resetBtn.addEventListener("click", () => {
+  winners = []
   spinCount = 0
   spinCountEl.textContent = "Spins: 0"
   resultBox.textContent = "Hasil: -"
+  generateParticipants()
+  generatePrizes()
+  renderParticipants()
   drawWheel(0)
-  participantsList.querySelectorAll(".participant").forEach((n) => ((n.style.boxShadow = ""), (n.style.border = "")))
 })

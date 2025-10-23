@@ -9,6 +9,20 @@
   --accent: #c0392b;
   --muted: #666;
   --border: #eee;
+  --disabled: #bbbbbb;
+}
+
+::-webkit-scrollbar {
+  width: 10px;
+}
+
+::-webkit-scrollbar-track {
+  background: none;
+}
+
+::-webkit-scrollbar-thumb {
+  background: var(--muted);
+  border-radius: 8px 8px 8px 8px;
 }
 
 /* === LAYOUT DASAR === */
@@ -16,28 +30,35 @@ html,
 body {
   height: 100%;
   margin: 0;
+  padding: 5px;
   font-family: "Inter", "Segoe UI", Arial, sans-serif;
   background: linear-gradient(180deg, #ffffff, #f8f8f8);
   color: #333;
 }
 
-.wrap {
+/* .wrap {
   display: flex;
   flex-wrap: wrap;
   justify-content: center;
-  align-items: flex-start;
+  align-items: stretch;
   gap: 24px;
-  max-width: 1200px;
-  margin: 30px auto;
-  padding: 20px;
+  margin: auto;
+  padding: 10px;
+} */
+
+.wrap {
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr;
 }
 
 .panel {
   background: var(--card);
-  border-radius: 14px;
-  box-shadow: 0 8px 30px rgba(0, 0, 0, 0.08);
-  padding: 24px;
+  border-radius: 8px;
+  border: 1px solid var(--disabled);
+  box-shadow: 0 8px 8px rgba(0, 0, 0, 0.08);
+  padding: 15px;
   transition: all 0.3s ease;
+  margin: 10px;
 }
 
 .panel:hover {
@@ -46,7 +67,7 @@ body {
 
 /* === PANEL KIRI === */
 .left {
-  width: 360px;
+  width: auto;
   min-height: 600px;
 }
 
@@ -71,21 +92,22 @@ h1 {
 .participants {
   height: 420px;
   overflow-y: auto;
-  border: 1px solid var(--border);
+  border: 1px solid var(--disabled);
   border-radius: 10px;
   padding: 10px;
   background: #fbfbfc;
 }
 
 .participant {
-  display: flex;
-  justify-content: space-between;
+  text-align: center;
   font-size: 14px;
-  border-radius: 6px;
+  border-radius: 5px;
   padding: 6px 8px;
   margin-bottom: 6px;
   transition: 0.2s;
 }
+
+/* UNCOMMENT UNTUK MELIHAT TIPE HADIAH*/
 
 .participant.emp {
   background: #fff6f6;
@@ -93,9 +115,21 @@ h1 {
 }
 
 .participant.non {
-  background: #f6fff5;
-  border: 1px solid #e8ffd9;
+  background: #d9e9ff;
+  border: 1px solid #d9e9ff;
 }
+
+/* UNCOMMENT UNTUK MENYEMBUNYIKAN TIPE HADIAH */
+
+/* .participant.emp {
+  background: var(--card);
+  border: 1px solid var(--disabled);
+}
+
+.participant.non {
+  background: var(--card);
+  border: 1px solid var(--disabled);
+} */
 
 /* === TOMBOL === */
 .controls {
@@ -117,7 +151,7 @@ button {
 }
 
 button:hover {
-  background: #a93226;
+  background: #ee6255;
 }
 
 button.gray {
@@ -133,7 +167,7 @@ button.gray:hover {
   color: #333;
   padding: 8px 12px;
   border-radius: 8px;
-  font-size: 13px;
+  font-size: 14px;
 }
 
 /* === PANEL KANAN === */
@@ -141,7 +175,7 @@ button.gray:hover {
   display: flex;
   flex-direction: column;
   align-items: center;
-  justify-content: flex-start;
+  justify-content: center;
 }
 
 /* === RODA === */
@@ -163,13 +197,13 @@ button.gray:hover {
 .canvas-wrapper .pointer {
   position: absolute;
   top: 50%;
-  right: -17px;
-  transform: translateY(-50%);
+  right: -10px;
+  transform: translateY(-100%);
   width: 0;
   height: 0;
-  border-top: 10px solid transparent;
-  border-bottom: 10px solid transparent;
-  border-right: 25px solid var(--accent);
+  border-top: 8px solid transparent;
+  border-bottom: 8px solid transparent;
+  border-right: 20px solid var(--accent);
 }
 
 /* === HASIL === */
@@ -195,16 +229,8 @@ footer {
 /* === RESPONSIVE === */
 @media (max-width: 900px) {
   .wrap {
-    flex-direction: column;
+    grid-template-columns: 1fr;
     align-items: center;
-  }
-
-  .left {
-    width: 90%;
-  }
-
-  .right {
-    width: 100%;
   }
 
   #wheelCanvas {
@@ -218,4 +244,48 @@ footer {
     border-bottom-width: 14px;
     border-left-width: 24px;
   }
+}
+
+/* Panel gambar hadiah */
+.prize-image-panel {
+  padding: 10px;
+  text-align: center;
+}
+
+.prize-image-panel h2 {
+  font-size: 18px;
+  color: #e74c3c;
+  margin-bottom: 10px;
+}
+
+#prizeDisplay img {
+  width: 400px;
+  height: 400px;
+  object-fit: contain;
+  border-radius: 10px;
+  margin-bottom: 10px;
+}
+
+#prizeName {
+  font-weight: bold;
+  color: #333;
+  font-size: 16px;
+}
+
+#winnerName {
+  font-weight: bold;
+  color: #666;
+  margin-top: 6px;
+}
+
+.hidden {
+  display: none;
+}
+
+.winner-panel {
+  background: var(--card);
+  border-radius: 14px;
+  box-shadow: 0 8px 30px rgba(0, 0, 0, 0.08);
+  padding: 24px;
+  transition: all 0.3s ease;
 }

@@ -3,26 +3,26 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>🎁 Roulette Doorprize — 39 Hadiah</title>
+    <title>🎁 Famget Doorprize</title>
     <link rel="stylesheet" href="style.css" />
   </head>
   <body>
     <div class="wrap">
       <!-- PANEL KIRI -->
       <div class="panel left">
-        <h1>🎡 Roulette Doorprize — 39 Hadiah</h1>
-        <p class="lead">
+        <h1>🎡 Family Gathering Doorprize 2025</h1>
+        <!-- <p class="lead">
           Terdiri dari <strong>11 hadiah karyawan</strong> dan <strong>28 non-karyawan</strong>. Semua hadiah tergabung
           dalam satu roda, dengan tipe hadiah yang tetap <em>rahasia</em>.
-        </p>
+        </p> -->
 
         <div class="controls">
-          <button id="spinBtn">SPIN</button>
-          <div class="small" id="spinCount">Spins: 0</div>
+          <button id="spinBtn">DRAW!</button>
+          <div class="small" id="spinCount">Count: 0</div>
           <button id="resetBtn" class="gray">RESET</button>
         </div>
 
-        <div class="participants-title">Daftar Peserta:</div>
+        <div class="participants-title">Daftar Kupon:</div>
         <div class="participants" id="participantsList"></div>
       </div>
 
@@ -33,15 +33,27 @@
           <div class="pointer"></div>
         </div>
 
-        <div class="result" id="resultBox">Hasil: -</div>
+        <div class="result" id="resultBox">Result: -</div>
+      </div>
+      <!-- PANEL GAMBAR HADIAH -->
+      <div class="panel prize-image-panel">
+        <h2>🎁 Pemenang</h2>
+        <div id="prizeDisplay" class="hidden">
+          <img id="prizeImage" src="" alt="Gambar Hadiah" />
+          <p id="prizeName"></p>
+          <p id="winnerName"></p>
+        </div>
       </div>
     </div>
-
-    <footer>
+    <div class="panel winner-participant">
+      <h2>Daftar Pemenang</h2>
+      <div></div>
+    </div>
+    <!-- <footer>
       © 2025 — Static Doorprize Roulette |
       <span>Versi Rahasia (Karyawan & Non-Karyawan)</span>
-    </footer>
+    </footer> -->
 
-    <script src="script.js"></script>
+    <script src="script2.js"></script>
   </body>
 </html>
